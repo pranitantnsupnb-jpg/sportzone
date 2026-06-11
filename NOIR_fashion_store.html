@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOIR — Fashion Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { font-family: 'Inter', sans-serif; background: #0A0A0A; color: #F5F0E8; overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 0.5px solid rgba(200,168,130,0.2);
+    }
+    .nav-logo { font-family: 'Cormorant Garant', serif; font-size: 22px; font-weight: 300; letter-spacing: 0.18em; color: #F5F0E8; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 12px; letter-spacing: 0.12em; color: rgba(245,240,232,0.6); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: #C8A882; }
+    .nav-actions { display: flex; gap: 1.2rem; align-items: center; }
+    .nav-actions i { font-size: 18px; color: rgba(245,240,232,0.7); cursor: pointer; transition: color 0.2s; }
+    .nav-actions i:hover { color: #C8A882; }
+    .cart-badge { position: relative; }
+    .cart-badge::after {
+      content: '3'; position: absolute; top: -6px; right: -8px;
+      background: #C8A882; color: #0A0A0A;
+      font-size: 9px; font-weight: 500;
+      width: 14px; height: 14px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 14px; text-align: center;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 88vh; overflow: hidden;
+    }
+    .hero-text-col {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 3rem;
+    }
+    .hero-eyebrow { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: #C8A882; margin-bottom: 2rem; }
+    .hero-title {
+      font-family: 'Cormorant Garant', serif;
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 300; line-height: 0.92;
+      color: #F5F0E8; margin-bottom: 2rem;
+    }
+    .hero-title em { font-style: italic; color: #C8A882; }
+    .hero-sub { font-size: 13px; line-height: 1.7; color: rgba(245,240,232,0.5); max-width: 300px; margin-bottom: 2.5rem; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #C8A882; color: #0A0A0A;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 14px 28px; border: none; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #E8D5B7; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; color: rgba(245,240,232,0.6);
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 14px 0; border: none; cursor: pointer; margin-left: 2rem;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .btn-ghost:hover { color: #F5F0E8; }
+
+    .hero-image-col { position: relative; overflow: hidden; }
+    .hero-img-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #1a1510 0%, #2d2419 40%, #1a1510 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; min-height: 500px;
+    }
+    .hero-img-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg, transparent, transparent 40px,
+        rgba(200,168,130,0.03) 40px, rgba(200,168,130,0.03) 41px
+      );
+    }
+    .hero-mannequin {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 220px; line-height: 1;
+      color: rgba(200,168,130,0.08); font-weight: 300; font-style: italic;
+      position: absolute; bottom: -20px; right: -10px; pointer-events: none;
+      user-select: none;
+    }
+    .hero-product-card {
+      position: absolute; bottom: 2rem; left: 2rem;
+      background: rgba(10,10,10,0.85); border: 0.5px solid rgba(200,168,130,0.3);
+      padding: 1rem 1.25rem; backdrop-filter: blur(4px);
+    }
+    .hpc-label { font-size: 10px; color: #C8A882; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+    .hpc-name { font-family: 'Cormorant Garant', serif; font-size: 18px; font-weight: 400; color: #F5F0E8; }
+    .hpc-price { font-size: 13px; color: rgba(245,240,232,0.5); margin-top: 2px; }
+
+    /* TICKER */
+    .ticker {
+      background: #C8A882; color: #0A0A0A;
+      padding: 10px 0; overflow: hidden; white-space: nowrap;
+    }
+    .ticker-inner { display: inline-flex; gap: 4rem; animation: ticker 18s linear infinite; }
+    .ticker-item { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* SECTIONS */
+    .section { padding: 5rem 3rem; }
+    .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+    .section-title { font-family: 'Cormorant Garant', serif; font-size: 36px; font-weight: 300; color: #F5F0E8; }
+    .section-title em { font-style: italic; color: #C8A882; }
+    .see-all { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); text-decoration: none; cursor: pointer; transition: color 0.2s; }
+    .see-all:hover { color: #C8A882; }
+
+    /* FILTER */
+    .filter-bar { display: flex; gap: 0.75rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .filter-btn {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 7px 16px; border: 0.5px solid rgba(200,168,130,0.3);
+      background: transparent; color: rgba(245,240,232,0.5);
+      cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+    }
+    .filter-btn:hover, .filter-btn.active { background: #C8A882; color: #0A0A0A; border-color: #C8A882; }
+
+    /* PRODUCTS */
+    .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .product-card { cursor: pointer; }
+    .product-img { aspect-ratio: 3/4; margin-bottom: 1rem; position: relative; overflow: hidden; }
+    .product-img-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garant', serif; font-size: 64px;
+      font-style: italic; font-weight: 300;
+      transition: transform 0.4s ease;
+    }
+    .product-card:hover .product-img-inner { transform: scale(1.04); }
+    .pi-1 { background: #1c1a16; color: rgba(200,168,130,0.25); }
+    .pi-2 { background: #141920; color: rgba(120,150,180,0.2); }
+    .pi-3 { background: #1a1618; color: rgba(180,140,160,0.2); }
+    .pi-4 { background: #161c14; color: rgba(140,170,120,0.2); }
+    .product-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: #C8A882; color: #0A0A0A;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 8px;
+    }
+    .product-tag.sale { background: #2D2D2D; color: #C8A882; }
+    .product-wishlist {
+      position: absolute; top: 10px; right: 12px;
+      background: transparent; border: none; cursor: pointer;
+      color: rgba(245,240,232,0.4); font-size: 16px;
+      transition: color 0.2s;
+    }
+    .product-wishlist:hover { color: #C8A882; }
+    .product-name { font-family: 'Cormorant Garant', serif; font-size: 17px; font-weight: 400; color: #F5F0E8; margin-bottom: 4px; }
+    .product-cat { font-size: 11px; color: rgba(245,240,232,0.35); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .product-price { font-size: 14px; color: #C8A882; }
+    .product-price-old { font-size: 12px; color: rgba(245,240,232,0.25); text-decoration: line-through; margin-right: 6px; }
+
+    /* BANNER */
+    .banner-strip {
+      margin: 0 3rem 5rem; padding: 4rem;
+      background: #141414; border: 0.5px solid rgba(200,168,130,0.15);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    .banner-title { font-family: 'Cormorant Garant', serif; font-size: 42px; font-weight: 300; line-height: 1.1; color: #F5F0E8; }
+    .banner-title em { font-style: italic; color: #C8A882; }
+    .banner-desc { font-size: 13px; line-height: 1.8; color: rgba(245,240,232,0.45); margin-bottom: 2rem; }
+    .banner-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .stat-num { font-family: 'Cormorant Garant', serif; font-size: 32px; font-weight: 300; color: #C8A882; }
+    .stat-label { font-size: 11px; color: rgba(245,240,232,0.35); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+
+    /* NEWSLETTER */
+    .newsletter {
+      margin: 0 3rem 5rem; padding: 3.5rem;
+      border: 0.5px solid rgba(200,168,130,0.2);
+      text-align: center;
+    }
+    .newsletter-title { font-family: 'Cormorant Garant', serif; font-size: 30px; font-weight: 300; color: #F5F0E8; margin-bottom: 0.5rem; }
+    .newsletter-sub { font-size: 13px; color: rgba(245,240,232,0.4); margin-bottom: 2rem; }
+    .newsletter-form { display: flex; max-width: 420px; margin: 0 auto; gap: 0; }
+    .newsletter-input {
+      flex: 1; padding: 12px 16px; background: transparent;
+      border: 0.5px solid rgba(200,168,130,0.3); border-right: none;
+      color: #F5F0E8; font-family: 'Inter', sans-serif; font-size: 13px;
+      outline: none;
+    }
+    .newsletter-input::placeholder { color: rgba(245,240,232,0.25); }
+    .newsletter-input:focus { border-color: #C8A882; }
+    .newsletter-submit {
+      padding: 12px 24px; background: #C8A882; color: #0A0A0A;
+      border: none; font-family: 'Inter', sans-serif;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .newsletter-submit:hover { background: #E8D5B7; }
+
+    /* FOOTER */
+    footer {
+      border-top: 0.5px solid rgba(200,168,130,0.15);
+      padding: 3rem; background: #060606;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+    }
+    .footer-brand { font-family: 'Cormorant Garant', serif; font-size: 24px; font-weight: 300; letter-spacing: 0.15em; color: #F5F0E8; margin-bottom: 0.75rem; }
+    .footer-tagline { font-size: 12px; color: rgba(245,240,232,0.3); line-height: 1.7; max-width: 220px; }
+    .footer-col-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #C8A882; margin-bottom: 1.25rem; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a { font-size: 13px; color: rgba(245,240,232,0.35); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: #F5F0E8; }
+    .footer-bottom {
+      grid-column: 1 / -1; border-top: 0.5px solid rgba(245,240,232,0.06);
+      padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-size: 11px; color: rgba(245,240,232,0.2); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-image-col { min-height: 360px; }
+      .hero-text-col { padding: 3rem 1.5rem; }
+      .section { padding: 3rem 1.5rem; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .banner-strip { margin: 0 1.5rem 3rem; grid-template-columns: 1fr; padding: 2rem; }
+      .newsletter { margin: 0 1.5rem 3rem; padding: 2rem; }
+      footer { grid-template-columns: 1fr 1fr; padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 500px) {
+      .products-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .newsletter-form { flex-direction: column; }
+      .newsletter-input { border-right: 0.5px solid rgba(200,168,130,0.3); border-bottom: none; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="nav-logo">NOIR</div>
+    <ul class="nav-links">
+      <li><a href="#">ใหม่ล่าสุด</a></li>
+      <li><a href="#">ผู้หญิง</a></li>
+      <li><a href="#">ผู้ชาย</a></li>
+      <li><a href="#">คอลเลกชัน</a></li>
+      <li><a href="#">เซล</a></li>
+    </ul>
+    <div class="nav-actions">
+      <i class="ti ti-search" title="ค้นหา"></i>
+      <i class="ti ti-heart" title="รายการโปรด"></i>
+      <div class="cart-badge"><i class="ti ti-shopping-bag" title="ตะกร้าสินค้า"></i></div>
+      <i class="ti ti-user" title="บัญชีของฉัน"></i>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text-col">
+      <p class="hero-eyebrow">คอลเลกชันใหม่ · ซีซัน 2025</p>
+      <h1 class="hero-title">แต่งตัว<br>อย่าง<em>มีเอกลักษณ์</em></h1>
+      <p class="hero-sub">เสื้อผ้าพรีเมียมที่ผสมผสานความเรียบหรูเข้ากับความสบาย คัดสรรมาเพื่อคนที่มีสไตล์เป็นของตัวเอง</p>
+      <div>
+        <button class="btn-primary">ดูคอลเลกชัน <i class="ti ti-arrow-right"></i></button>
+        <a class="btn-ghost" href="#">ดูทั้งหมด</a>
+      </div>
+    </div>
+    <div class="hero-image-col">
+      <div class="hero-img-placeholder">
+        <div class="hero-mannequin">N</div>
+        <div class="hero-product-card">
+          <p class="hpc-label">พิเศษสุด</p>
+          <p class="hpc-name">Silk Wrap Dress</p>
+          <p class="hpc-price">฿4,290</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item">ส่งฟรีทั่วประเทศ เมื่อซื้อครบ ฿1,500</span>
+      <span class="ticker-item">✦</span>
+      <span class="ticker-item">คอลเลกชันใหม่มาแล้ว</span>
+      <span class="ticker-item">✦</span>
+      <span class="ticker-item">รับประกันคืนสินค้า 30 วัน</span>
+      <span class="ticker-item">✦</span>
+      <span class="ticker-item">ส่งฟรีทั่วประเทศ เมื่อซื้อครบ ฿1,500</span>
+      <span class="ticker-item">✦</span>
+      <span class="ticker-item">คอลเลกชันใหม่มาแล้ว</span>
+      <span class="ticker-item">✦</span>
+      <span class="ticker-item">รับประกันคืนสินค้า 30 วัน</span>
+      <span class="ticker-item">✦</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">สินค้า<em>มาใหม่</em></h2>
+      <a class="see-all" href="#">ดูทั้งหมด →</a>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active">ทั้งหมด</button>
+      <button class="filter-btn">เสื้อ</button>
+      <button class="filter-btn">กางเกง</button>
+      <button class="filter-btn">กระโปรง</button>
+      <button class="filter-btn">แจ็คเก็ต</button>
+      <button class="filter-btn">เซล</button>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-img">
+          <div class="product-img-inner pi-1">◆</div>
+          <span class="product-tag">ใหม่</span>
+          <button class="product-wishlist" title="เพิ่มในรายการโปรด"><i class="ti ti-heart"></i></button>
+        </div>
+        <p class="product-cat">เสื้อผ้า</p>
+        <p class="product-name">Linen Oversized Blazer</p>
+        <p class="product-price">฿3,590</p>
+      </div>
+      <div class="product-card">
+        <div class="product-img">
+          <div class="product-img-inner pi-2">◈</div>
+          <span class="product-tag">ยอดนิยม</span>
+          <button class="product-wishlist" title="เพิ่มในรายการโปรด"><i class="ti ti-heart"></i></button>
+        </div>
+        <p class="product-cat">กางเกง</p>
+        <p class="product-name">Wide Leg Trousers</p>
+        <p class="product-price">฿2,190</p>
+      </div>
+      <div class="product-card">
+        <div class="product-img">
+          <div class="product-img-inner pi-3">◇</div>
+          <span class="product-tag sale">เซล</span>
+          <button class="product-wishlist" title="เพิ่มในรายการโปรด"><i class="ti ti-heart"></i></button>
+        </div>
+        <p class="product-cat">ชุดเดรส</p>
+        <p class="product-name">Wrap Midi Dress</p>
+        <p class="product-price"><span class="product-price-old">฿3,200</span>฿1,990</p>
+      </div>
+      <div class="product-card">
+        <div class="product-img">
+          <div class="product-img-inner pi-4">◉</div>
+          <button class="product-wishlist" title="เพิ่มในรายการโปรด"><i class="ti ti-heart"></i></button>
+        </div>
+        <p class="product-cat">เสื้อ</p>
+        <p class="product-name">Cotton Knit Sweater</p>
+        <p class="product-price">฿1,890</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND BANNER -->
+  <div class="banner-strip">
+    <div>
+      <h2 class="banner-title">เสื้อผ้าที่<em>บอกเล่า</em><br>ตัวตนของคุณ</h2>
+    </div>
+    <div>
+      <p class="banner-desc">เราคัดสรรวัสดุคุณภาพสูงจากทั่วโลก ออกแบบโดยนักออกแบบไทย ที่เข้าใจสไตล์และชีวิตคนไทยอย่างแท้จริง</p>
+      <div class="banner-stats">
+        <div>
+          <p class="stat-num">500+</p>
+          <p class="stat-label">สินค้า</p>
+        </div>
+        <div>
+          <p class="stat-num">20k+</p>
+          <p class="stat-label">ลูกค้า</p>
+        </div>
+        <div>
+          <p class="stat-num">4.9★</p>
+          <p class="stat-label">รีวิว</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <p class="newsletter-title">รับข่าวสารก่อนใคร</p>
+    <p class="newsletter-sub">สมัครรับ newsletter เพื่อรับส่วนลด 10% สำหรับการสั่งซื้อครั้งแรก</p>
+    <div class="newsletter-form">
+      <input type="email" class="newsletter-input" placeholder="อีเมลของคุณ" />
+      <button class="newsletter-submit">สมัคร</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <p class="footer-brand">NOIR</p>
+      <p class="footer-tagline">เสื้อผ้าพรีเมียมสำหรับคนที่มีสไตล์เป็นของตัวเอง ออกแบบในประเทศไทย</p>
+    </div>
+    <div>
+      <p class="footer-col-title">ช้อปปิ้ง</p>
+      <ul class="footer-links">
+        <li><a href="#">สินค้าใหม่</a></li>
+        <li><a href="#">ผู้หญิง</a></li>
+        <li><a href="#">ผู้ชาย</a></li>
+        <li><a href="#">เซล</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">บริการ</p>
+      <ul class="footer-links">
+        <li><a href="#">วิธีสั่งซื้อ</a></li>
+        <li><a href="#">การจัดส่ง</a></li>
+        <li><a href="#">คืนสินค้า</a></li>
+        <li><a href="#">ติดต่อเรา</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">ติดตามเรา</p>
+      <ul class="footer-links">
+        <li><a href="#"><i class="ti ti-brand-instagram"></i> Instagram</a></li>
+        <li><a href="#"><i class="ti ti-brand-facebook"></i> Facebook</a></li>
+        <li><a href="#"><i class="ti ti-brand-tiktok"></i> TikTok</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 NOIR. สงวนลิขสิทธิ์ทุกประการ</p>
+      <p class="footer-copy">ออกแบบในประเทศไทย 🇹🇭</p>
+    </div>
+  </footer>
+
+  <script>
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Wishlist toggle
+    document.querySelectorAll('.product-wishlist').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const icon = btn.querySelector('i');
+        icon.classList.toggle('ti-heart');
+        icon.classList.toggle('ti-heart-filled');
+        btn.style.color = icon.classList.contains('ti-heart-filled') ? '#C8A882' : '';
+      });
+    });
+  </script>
+</body>
+</html>
